@@ -22,7 +22,7 @@ console.log('==============================');
 console.warn(0)
 
 let cycleCounter = 0
-for (let i = 0; i < 500; i++) {
+for (let i = 0; i < 100000; i++) {
   const minval = arc.min();
   cycleCounter++
   const setDelta = arc.sumLXEP() - arc.sumZTGO()
@@ -90,7 +90,7 @@ for (let i = 0; i < 500; i++) {
 
   if (i % 16 === 15) {
     console.log('==============================');
-    console.warn(i)
+    console.log(i)
     if (cycleCounter > 0) {
       console.warn("DID NOT STABILIZE(EVERBODY PANIC BOLINA IS FULL ON STONE)")
       console.log(arc)
