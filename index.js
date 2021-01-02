@@ -1,12 +1,12 @@
 const { Arcosphere } = require('./arcosphere.js');
-
+const colors = require('colors/safe');
 const arc = new Arcosphere({
   l: 15,
   x: 3,
-  z: 16,
-  t: 1,
   e: 23,
   p: 1,
+  z: 16,
+  t: 1,
   g: 1,
   o: 2
 });
@@ -18,11 +18,76 @@ console.log('\n\n============================================================');
 console.log(`average number per type: ${average}`);
 console.log(`target min per type: ${minPerType}`)
 console.log(arc);
-console.log('==============================');
-console.warn(0)
+
+
+
+
+arc.tesseract.enabled = false
+
+for (let i = 0; i < 10000; i++) {
+  console.log(colors.red(`============= ${i} =============`));
+  
+  const setDelta = arc.sumLXEP() - arc.sumZTGO()
+  if (setDelta > 4 && arc.minLXEP() > 1) {
+    console.log(colors.brightYellow(`Converting with recipe 8 (${setDelta})`))
+    arc.convert(8)
+  } else if (setDelta < -4 && arc.minZTGO() > 1) {
+    console.log(colors.brightYellow(`Converting with recipe 9 (${setDelta})`))
+    arc.convert(9)
+  } else {
+
+    // Find the most favorable recipe
+    let maxweight = -Infinity
+    let maxindex = -1
+    for (r = 0; r < 8; r++) {
+      let w = arc.weight(arc.recipes[r])
+      if (w > maxweight) {
+        maxweight = w
+        maxindex = r
+      }
+    }
+
+    // Apply the most favorable recipe if we need to make a change
+    if (arc.minLXZ() < 2) {
+      console.log(colors.brightYellow(`Converting with recipe ${maxindex} (${maxweight})`))
+      arc.convert(maxindex)
+      //arc.tesseract.enabled = false
+    } else {
+      console.log(colors.brightGreen("Stable"))
+      arc.tesseract.enabled = true  // Ony start production after first stability reached
+    }
+
+  }
+
+
+
+  // Simulate tesseract production
+  arc.simulate()
+  
+  
+  
+  console.log(colors.brightBlue(arc.state))
+  if (arc.tesseract.delays > 100) {
+    break
+  }
+}
+
+console.log(arc.tesseract);
+console.log(colors.brightYellow(arc.stats))
+
+
+/*
 
 let cycleCounter = 0
 for (let i = 0; i < 100000; i++) {
+
+
+  
+
+
+
+
+
   const minval = arc.min();
   cycleCounter++
   const setDelta = arc.sumLXEP() - arc.sumZTGO()
@@ -92,9 +157,9 @@ for (let i = 0; i < 100000; i++) {
     console.log('==============================');
     console.log(i)
     if (cycleCounter > 0) {
-      console.warn("DID NOT STABILIZE(EVERBODY PANIC BOLINA IS FULL ON STONE)")
+      console.error("DID NOT STABILIZE(EVERBODY PANIC BOLINA IS FULL ON STONE)")
       console.log(arc)
-      //break
+      break
     }
     // make as many tesseracts as possible
     while(Math.min(arc.l, arc.x, arc.z) >= 2) {
@@ -121,5 +186,6 @@ for (let i = 0; i < 100000; i++) {
   
   //console.log('==============================');
 }
+*/
 
-console.log(arc);
+

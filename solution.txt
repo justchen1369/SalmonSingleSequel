@@ -1,0 +1,23 @@
+
+
+Define the state vector:
+
+[l
+ x
+ e
+ p
+ z
+ t
+ g
+ o]
+
+It's annoying because our operators are additive, not linear
+
+
+
+
+
+
+
+
+
